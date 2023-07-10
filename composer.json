@@ -1,0 +1,39 @@
+{
+    "name": "absolutesrl/change-tracker-php-sdk",
+    "description": "ChangeTracker SDK for Php",
+    "type": "library",
+    "license": "ISC",
+    "autoload": {
+        "psr-4": {
+            "Absolute\\ChangeTrackerPhpSdk\\": "src/",
+            "Absolute\\ChangeTrackerPhpSdk\\Model\\": "src/models",
+            "Absolute\\ChangeTrackerPhpSdk\\Helper\\": "src/helpers",
+            "Absolute\\ChangeTrackerPhpSdk\\Core\\": "src/core"
+        },
+        "files": [
+            "src/makeChangeTrackerService.php",
+            "src/core/token.php",
+            "src/core/remoteClient.php",
+            "src/core/changeCalculator.php",
+            "src/helpers/array.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Absolute srl"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.2",
+        "ext-curl": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.8"
+    }
+}
