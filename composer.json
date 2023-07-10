@@ -23,7 +23,7 @@
             "name": "Absolute srl"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=8.2",
         "ext-curl": "*"
