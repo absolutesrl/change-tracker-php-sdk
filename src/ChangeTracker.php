@@ -7,7 +7,6 @@ use Absolute\ChangeTrackerPhpSdk\Model\Table;
 use function Absolute\ChangeTrackerPhpSdk\Core\generateToken;
 use function Absolute\ChangeTrackerPhpSdk\Core\diff;
 use function Absolute\ChangeTrackerPhpSdk\Core\store;
-use Closure;
 
 class ChangeTracker {
     public ModelTracker $modelTracker;
@@ -50,14 +49,3 @@ class ChangeTracker {
     }
 }
 
-/*
-return [
-    'changeTracker' => $changeTrackerService,
-    'modelTracker' => 'modelTracker',
-    'store' => 'store',
-    'diff' => 'diff',
-    'generateToken' => 'generateToken',
-    'Field' => 'Field',
-    'Row' => 'Row',
-    'Table' => 'Table'
-];*/
