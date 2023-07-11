@@ -17,7 +17,7 @@ use function Absolute\ChangeTrackerPhpSdk\Helper\any;
  * @param Row|null $next
  * @return Row|null
  */
-function diff(string $tableName, Row $prev = null, Row $next = null) : Row | null{
+function diff(string $tableName, Row $prev = null, Row $next = null){
     $diffModel = new Row();
 
     $prevIsSet = isset($prev);

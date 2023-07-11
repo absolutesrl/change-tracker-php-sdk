@@ -34,7 +34,7 @@
          * @return ModelMapper
          * @throws Exception
          */
-        public function map(object $model, string|callable $mapping, string $fieldName) : ModelMapper {
+        public function map(object $model, $mapping, string $fieldName) : ModelMapper {
             $modelMapper = new ModelMapper($model);
 
             return $modelMapper->map($mapping, $fieldName);

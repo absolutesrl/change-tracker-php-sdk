@@ -8,7 +8,7 @@ namespace Absolute\ChangeTrackerPhpSdk\Core;
  * @param int $duration
  * @return String
  */
-function generateToken(string $secret, string $tableName, string $rowKey, int $duration = 5) : String{
+function generateToken(string $secret, string $tableName, string $rowKey, int $duration = 5) : string {
     $payload =  [];
 
     $payload['table'] = $tableName;

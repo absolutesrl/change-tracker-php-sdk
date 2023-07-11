@@ -25,7 +25,7 @@
          * Map all the primitive fields of the model (string, number, boolean, Date)
          * @returns ModelMapper ModelMapper instance
          **/
-        public function mapAll(): static
+        public function mapAll(): ModelMapper
         {
             $keys = array_keys((array)$this->model);
             foreach ($keys as $key) {
@@ -42,7 +42,7 @@
          * @return ModelMapper
          * @throws Exception
          */
-        public function map(string|callable $mapping, string $fieldName): static
+        public function map($mapping, string $fieldName): ModelMapper
         {
             if (!$mapping || !$fieldName) throw new Exception('ChangeTracker, ModelMapper, Map Error:invalid mapping' . $mapping . 'or field ' . $fieldName);
 
@@ -78,7 +78,7 @@
          * @param string $fieldName - the name of mapped field in the result model
          * @returns ModelMapper ModelMapper instance
          **/
-        public function ignore(string $fieldName): static
+        public function ignore(string $fieldName): ModelMapper
         {
             unset($this->fields->$fieldName);
             return $this;
@@ -145,11 +145,17 @@
 
         private function isSimpleType($value): bool
         {
-            return match (gettype($value)) {
-                'string', 'boolean', 'integer', 'double' => true,
-                'object' => $value instanceof DateTime,
-                default => false,
-            };
+            switch (gettype($value)) {
+                case 'string':
+                case 'boolean':
+                case 'integer':
+                case 'double':
+                    return true;
+                case 'object':
+                    return $value instanceof DateTime;
+                default:
+                    return false;
+            }
 
         }
     }

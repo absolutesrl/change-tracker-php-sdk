@@ -32,7 +32,7 @@ class ChangeTracker {
         $this->table = $table;
     }
 
-    public static function service() : static {
+    public static function service() : ChangeTracker {
 
         $changeTrackerService = makeChangeTrackerService([
             'generateToken' => fn(...$args) => generateToken(...$args),

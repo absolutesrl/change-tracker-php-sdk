@@ -28,7 +28,7 @@
             return $this->odt;
         }
 
-        public static function createTable(array $rows, string $tableName, string $userName, string $ipAddress) : static | null{
+        public static function createTable(array $rows, string $tableName, string $userName, string $ipAddress) {
 
             foreach ($rows as $row){
                 if(!$row instanceof Row){

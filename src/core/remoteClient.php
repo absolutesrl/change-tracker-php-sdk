@@ -9,7 +9,7 @@ use Absolute\ChangeTrackerPhpSdk\Model\Table;
  * @param Table|null $table
  * @return object|null
  */
-function store(string $hostName, string $token, Table $table = null) : object | null{
+function store(string $hostName, string $token, Table $table = null) {
     if ($table === null) return null;
 
     $baseUrl = "https://{$hostName}.hosts.changetracker.it";
