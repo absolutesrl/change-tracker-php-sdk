@@ -1,6 +1,5 @@
 <?php
 namespace Absolute\ChangeTrackerPhpSdk;
-require_once(__DIR__ . '/../vendor/autoload.php');
 
 use Absolute\ChangeTrackerPhpSdk\Model\Field;
 use Absolute\ChangeTrackerPhpSdk\Model\Row;
