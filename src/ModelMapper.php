@@ -96,7 +96,7 @@
 
             foreach ($keys as $key) {
                 try {
-                    if (!property_exists($this->model, $key)) throw new Exception('ChangeTracker, Error generating Field model for field ' . $key);
+                    if (!property_exists($this->fields, $key)) throw new Exception('ChangeTracker, Error generating Field model for field ' . $key);
                     $newField = new Field($key, $this->convertValue(call_user_func($this->fields->$key, $this->model)));
                     if (!empty($newField->prevValue)) $newFields[] = $newField;
                 } catch (Exception $ex) {
