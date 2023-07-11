@@ -26,7 +26,7 @@ function diff(string $tableName, Row $prev = null, Row $next = null) : Row | nul
     if($prevIsSet) $diffModel->key = $prev->key;
     if (!$prevIsSet && $nextIsSet) $diffModel->key = $next->key;
     if (!$prevIsSet && !$nextIsSet) {
-        echo "console.error('ChangeTracker, diff: missing or inSet diff models')";
+        echo "ChangeTracker, diff: missing or inSet diff models";
         return null;
     }
 

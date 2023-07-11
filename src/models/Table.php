@@ -32,7 +32,7 @@
 
             foreach ($rows as $row){
                 if(!$row instanceof Row){
-                    echo "<script>console.error('ChangeTracker, createTable: invalid rows model');</script>";
+                    echo "ChangeTracker, createTable: invalid rows model";
                     return null;
                 }
             }
