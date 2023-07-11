@@ -28,11 +28,12 @@
             return $this->odt;
         }
 
-        public static function createTable(array $rows, string $tableName, string $userName, string $ipAddress) {
+        public static function createTable(array $rows, string $tableName, string $userName, string $ipAddress): ?Table
+        {
 
             foreach ($rows as $row){
                 if(!$row instanceof Row){
-                    echo "<script>console.error('ChangeTracker, createTable: invalid rows model');</script>";
+                    echo "ChangeTracker, createTable: invalid rows model";
                     return null;
                 }
             }

@@ -100,7 +100,7 @@
                     $newField = new Field($key, $this->convertValue(call_user_func($this->fields->$key, $this->model)));
                     if (!empty($newField->prevValue)) $newFields[] = $newField;
                 } catch (Exception $ex) {
-                    echo "<script>console.log('" . $ex . "');</script>";
+                    echo $ex;
                 }
             }
 
