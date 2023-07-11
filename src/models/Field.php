@@ -47,7 +47,7 @@
             $name = $this->name;
             $prev = $this->prevValue; 
             $next = $this->nextValue;
-            if (strtolower($prev . '') === strtolower($next . ''))
+            if (strtolower($prev) === strtolower($next))
                 return $name . '=(' . $next . ')';
 
             // modified

@@ -43,7 +43,7 @@ class changeTrackerService extends ChangeTrackerServiceContainer {
      * @param string $ipAddress
      * @return mixed
      */
-    public function store(string $tableName, string $userName, string $rowDescription, Row $prevModel, Row $nextModel, string $ipAddress = '') {
+    public function store(string $tableName, string $userName, string $rowDescription, Row $prevModel, Row $nextModel, string $ipAddress = '') : object | null {
         $token = parent::generateToken($this->apiSecretPost, $tableName, '', $this->tokenMinuteDuration);
         $row = parent::diff($tableName, $prevModel, $nextModel);
 
@@ -65,7 +65,7 @@ class changeTrackerService extends ChangeTrackerServiceContainer {
      * @param int $thisTokenMinuteDuration
      * @return mixed
      */
-    public function getToken(string $tableName, string $rowKey, int $thisTokenMinuteDuration = 5) {
+    public function getToken(string $tableName, string $rowKey, int $thisTokenMinuteDuration = 5) : string {
         return parent::generateToken( $this->apiSecretGet, $tableName, $rowKey, $thisTokenMinuteDuration );
     }
 }
