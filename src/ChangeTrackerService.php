@@ -16,7 +16,7 @@ use Absolute\ChangeTrackerPhpSdk\Model\Table;
  * @param {string} $apiSecretPost- API post secret
  * @param {int} [$tokenMinuteDuration=5] - the token duration in minutes
  **/
-class changeTrackerService {
+class ChangeTrackerService {
     public TokenInterface $token;
     public ChangeCalculatorInterface $changeCalculator;
     public RemoteClient $remoteClient;
