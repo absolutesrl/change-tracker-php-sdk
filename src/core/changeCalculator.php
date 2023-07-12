@@ -19,8 +19,7 @@ use function Absolute\ChangeTrackerPhpSdk\Helper\any;
  */
 class ChangeCalculator implements ChangeCalculatorInterface {
 
-    function diff(string $tableName, Row $prev = null, Row $next = null): ?Row
-    {
+    function diff(string $tableName, Row $prev = null, Row $next = null) {
         $diffModel = new Row();
 
         $prevIsSet = isset($prev);

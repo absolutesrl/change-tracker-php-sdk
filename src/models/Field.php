@@ -2,9 +2,9 @@
     namespace Absolute\ChangeTrackerPhpSdk\Model;
 
     class Field {
-        public string $name;
-        public string $prevValue;
-        public string $nextValue;
+        public string $f;
+        public string $p;
+        public string $n;
 
         /**
          * @constructor
@@ -13,15 +13,30 @@
          * @param string $nextValue
          */
         function __construct(string $name, string $prevValue = '', string $nextValue = '') {
-            $this->name = $name;
-            $this->prevValue = $prevValue;
-            $this->nextValue = $nextValue;
+            $this->f = $name;
+            $this->p = $prevValue;
+            $this->n = $nextValue;
+        }
+
+        public function __set($name, $value)
+        {
+            if($name === 'name') $this->f = $value;
+            if($name === 'prevValue') $this->p = $value;
+            if($name === 'nextValue') $this->n = $value;
+        }
+
+        public function __get($name)
+        {
+            if($name === 'name') return $this->f;
+            if($name === 'prevValue') return $this->p;
+            if($name === 'nextValue') return $this->n;
+            return $this->$name;
         }
 
         public function toString() : string {
-            $name = $this->name;
-            $prev = $this->prevValue; 
-            $next = $this->nextValue;
+            $name = $this->f;
+            $prev = $this->p;
+            $next = $this->n;
             if (strtolower($prev) === strtolower($next))
                 return $name . '=(' . $next . ')';
 

@@ -27,7 +27,9 @@ class changeTrackerService {
 
     /**
      * @constructor
-     * @param array $params
+     * @param TokenInterface $token
+     * @param ChangeCalculatorInterface $changeCalculator
+     * @param RemoteClientInterface $remoteClient
      * @param string $hostName
      * @param string $apiSecretGet
      * @param string $apiSecretPost

@@ -2,7 +2,7 @@
     namespace Absolute\ChangeTrackerPhpSdk\Model;
     use DateTime;
 
-    class Table {
+    class Table  {
 
         public string $name;
         public array $rows;
@@ -26,6 +26,11 @@
 
         public function getOperationDateTime() : DateTime {
             return $this->odt;
+        }
+
+        public function jsonSerialize(): array
+        {
+            return ['f' => $this->name, 'p' => $this->prevValue, 'n' => $this->nextValue];
         }
 
         public static function createTable(array $rows, string $tableName, string $userName, string $ipAddress): ?Table
