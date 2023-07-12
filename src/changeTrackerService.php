@@ -1,7 +1,12 @@
 <?php
 namespace Absolute\ChangeTrackerPhpSdk;
 
+use Absolute\ChangeTrackerPhpSdk\Core\ChangeCalculatorInterface;
+use Absolute\ChangeTrackerPhpSdk\Core\RemoteClient;
+use Absolute\ChangeTrackerPhpSdk\Core\RemoteClientInterface;
+use Absolute\ChangeTrackerPhpSdk\Core\TokenInterface;
 use Absolute\ChangeTrackerPhpSdk\Model\Row;
+use Absolute\ChangeTrackerPhpSdk\Model\Table;
 
 /**
  * change tracker interface
@@ -11,7 +16,10 @@ use Absolute\ChangeTrackerPhpSdk\Model\Row;
  * @param {string} $apiSecretPost- API post secret
  * @param {int} [$tokenMinuteDuration=5] - the token duration in minutes
  **/
-class changeTrackerService extends ChangeTrackerServiceContainer {
+class changeTrackerService {
+    public TokenInterface $token;
+    public ChangeCalculatorInterface $changeCalculator;
+    public RemoteClient $remoteClient;
     public string $hostName;
     public string $apiSecretGet;
     public string $apiSecretPost;
@@ -25,8 +33,10 @@ class changeTrackerService extends ChangeTrackerServiceContainer {
      * @param string $apiSecretPost
      * @param int $tokenMinuteDuration
      */
-    function __construct(array $params, string $hostName, string $apiSecretGet, string $apiSecretPost, int $tokenMinuteDuration = 5){
-        parent::__construct($params);
+    function __construct(TokenInterface $token, ChangeCalculatorInterface $changeCalculator, RemoteClientInterface $remoteClient, string $hostName, string $apiSecretGet, string $apiSecretPost, int $tokenMinuteDuration = 5 ){
+        $this->token = $token;
+        $this->changeCalculator = $changeCalculator;
+        $this->remoteClient = $remoteClient;
         $this->hostName = $hostName;
         $this->apiSecretGet = $apiSecretGet;
         $this->apiSecretPost = $apiSecretPost;
@@ -44,18 +54,18 @@ class changeTrackerService extends ChangeTrackerServiceContainer {
      * @return mixed
      */
     public function store(string $tableName, string $userName, string $rowDescription, Row $prevModel, Row $nextModel, string $ipAddress = '') : object | null {
-        $token = parent::generateToken($this->apiSecretPost, $tableName, '', $this->tokenMinuteDuration);
-        $row = parent::diff($tableName, $prevModel, $nextModel);
+        $token = $this->token->generateToken($this->apiSecretPost, $tableName, '', $this->tokenMinuteDuration);
+        $row = $this->changeCalculator->diff($tableName, $prevModel, $nextModel);
 
-        if (!$row) return json_decode('{"ok" : false, "errorText": "ChangeTracker, diff: missing or invalid diff models"}');
+        if (!$row) return json_decode('{"ok" : false, "errorText": "ChangeTracker, changeCalculator: missing or invalid changeCalculator models"}');
 
         $row->desc = $rowDescription;
 
-        $table = parent::createTable([$row], $tableName, $userName, $ipAddress);
+        $table = Table::createTable([$row], $tableName, $userName, $ipAddress);
 
         if (!$table) return json_decode('{"ok" : false, "errorText": "ChangeTracker, createTable: invalid rows model"}');
 
-        return parent::makeStore($this->hostName, $token, $table);
+        return $this->remoteClient->store($this->hostName, $token, $table);
     }
 
     /**
@@ -66,6 +76,6 @@ class changeTrackerService extends ChangeTrackerServiceContainer {
      * @return mixed
      */
     public function getToken(string $tableName, string $rowKey, int $thisTokenMinuteDuration = 5) : string {
-        return parent::generateToken( $this->apiSecretGet, $tableName, $rowKey, $thisTokenMinuteDuration );
+        return $this->token->generateToken( $this->apiSecretGet, $tableName, $rowKey, $thisTokenMinuteDuration );
     }
 }
