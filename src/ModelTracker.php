@@ -29,13 +29,13 @@
         /**
          * map - Create ModelMapper and map a single field using function or dot-separed string
          * @param object $model - the model to map
-         * @param string|callable $mapping
+         * @param callable|string $mapping
          * @param string $fieldName
          * @return ModelMapper
          * @throws Exception
          */
 
-        public static function map(object $model, $mapping, string $fieldName) : ModelMapper {
+        public static function map(object $model, callable|string $mapping, string $fieldName) : ModelMapper {
             $modelMapper = new ModelMapper($model);
 
             return $modelMapper->map($mapping, $fieldName);

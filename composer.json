@@ -24,9 +24,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.4",
-        "ext-curl": "*",
-        "ext-json": "*"
+        "php": ">=8.2",
+        "ext-curl": "*"
     },
     "config": {
         "allow-plugins": {

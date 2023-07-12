@@ -37,12 +37,12 @@
 
         /**
          * Map a single field using function or dot-separed string
-         * @param string|callable $mapping - function or dot-separed string used to map a field of the model
+         * @param callable|string $mapping - function or dot-separed string used to map a field of the model
          * @param string $fieldName - the name of mapped field in the result model
          * @return ModelMapper
          * @throws Exception
          */
-        public function map($mapping, string $fieldName): ModelMapper
+        public function map(callable|string $mapping, string $fieldName): ModelMapper
         {
             if (!$mapping || !$fieldName) throw new Exception('ChangeTracker, ModelMapper, Map Error:invalid mapping' . $mapping . 'or field ' . $fieldName);
 
@@ -145,17 +145,11 @@
 
         private function isSimpleType($value): bool
         {
-            switch (gettype($value)) {
-                case 'string':
-                case 'boolean':
-                case 'integer':
-                case 'double':
-                    return true;
-                case 'object':
-                    return $value instanceof DateTime;
-                default:
-                    return false;
-            }
+            return match (gettype($value)) {
+                'string', 'boolean', 'integer', 'double' => true,
+                'object' => $value instanceof DateTime,
+                default => false,
+            };
 
         }
     }
