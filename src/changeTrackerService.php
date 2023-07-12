@@ -53,7 +53,7 @@ class changeTrackerService {
      * @param string $ipAddress
      * @return mixed
      */
-    public function store(string $tableName, string $userName, string $rowDescription, Row $prevModel, Row $nextModel, string $ipAddress = '') : object | null {
+    public function store(string $tableName, string $userName, string $rowDescription, Row $prevModel, Row $nextModel, string $ipAddress = '') {
         $token = $this->token->generateToken($this->apiSecretPost, $tableName, '', $this->tokenMinuteDuration);
         $row = $this->changeCalculator->diff($tableName, $prevModel, $nextModel);
 

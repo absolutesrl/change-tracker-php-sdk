@@ -11,10 +11,9 @@
             "Absolute\\ChangeTrackerPhpSdk\\Core\\": "src/core"
         },
         "files": [
-            "src/makeChangeTrackerService.php",
-            "src/core/token.php",
-            "src/core/remoteClient.php",
-            "src/core/changeCalculator.php",
+          "src/core/Token.php",
+          "src/core/RemoteClient.php",
+          "src/core/ChangeCalculator.php",
             "src/helpers/array.php"
         ]
     },

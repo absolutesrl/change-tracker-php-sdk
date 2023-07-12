@@ -11,7 +11,7 @@
          * @param object $model - the model to map
          * @returns ModelMapper ModelMapper instance
          **/
-        public function createMap(object $model) : ModelMapper {
+        public static function createMap(object $model) : ModelMapper {
             return new ModelMapper($model);
         }
 
@@ -20,7 +20,7 @@
          * @param object $model - the model to map
          * @returns ModelMapper ModelMapper instance
          **/
-        public function mapAll(object $model) : ModelMapper {
+        public static function mapAll(object $model) : ModelMapper {
             $modelMapper = new ModelMapper($model);
 
             return $modelMapper->mapAll();
@@ -34,7 +34,8 @@
          * @return ModelMapper
          * @throws Exception
          */
-        public function map(object $model, $mapping, string $fieldName) : ModelMapper {
+
+        public static function map(object $model, $mapping, string $fieldName) : ModelMapper {
             $modelMapper = new ModelMapper($model);
 
             return $modelMapper->map($mapping, $fieldName);
@@ -46,7 +47,7 @@
          * @param Row[] $rows - array containing the table rows
          * @returns Table Table instance
          **/
-        public function toTable (string $name, array $rows) : Table {
+        public static function toTable (string $name, array $rows) : Table {
             return new Table($name, $rows);
         }
     }
