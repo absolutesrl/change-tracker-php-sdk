@@ -1,75 +1,74 @@
 <?php
 
 require_once(__DIR__ . '/../vendor/autoload.php');
-use Absolute\ChangeTrackerPhpSdk\ChangeTracker;
-
-$ct = new ChangeTracker;
+use Absolute\ChangeTrackerPhpSdk\ChangeTrackerService;
+use Absolute\ChangeTrackerPhpSdk\ModelTracker;
 
 // Initialize ChangeTracker
-$service = $ct->changeTracker('hostName', 'ApiGetKey', 'ApiPostKey', 5);
+$ct = new ChangeTrackerService('YOUR_HOSTNAME', 'READ_SECRET', 'WRITE_SECRET', 5);
 
 // Initial data
 $data = json_decode('{"name": "John"}');
 
 // Snapshot before changes
-$prevMap = $ct->modelTracker->mapAll($data)->toRow('id');
+$prevMap = ModelTracker::mapAll($data)->toRow('id');
 
 // Your data changes
 $data->name = 'Jane';
 
 // Snapshot after changes
-$nextMap = $ct->modelTracker->mapAll($data)->toRow('id');
+$nextMap = ModelTracker::mapAll($data)->toRow('id');
 
 // Store changes in ChangeTracker
-$resp = $service->store('table', 'you@company.com', 'Comment', $prevMap, $nextMap);
+$resp = $ct->store('table', 'you@company.com', 'Comment', $prevMap, $nextMap);
 
 
 // Ignore attributes
 
 $data = json_decode('{"last_edited_on": "2021-09-19T08:25:33.498Z", "price": 123}');
 
-$prevMap = $ct->modelTracker->mapAll($data)->ignore('last_edited_on')->toRow('id');
+$prevMap = ModelTracker::mapAll($data)->ignore('last_edited_on')->toRow('id');
 
 $data->price = 126;
 
-$nextMap = $ct->modelTracker->mapAll($data)->ignore('last_edited_on')->toRow('id');
+$nextMap = ModelTracker::mapAll($data)->ignore('last_edited_on')->toRow('id');
 
-$resp = $service->store('table', 'you@company.com', 'Comment', $prevMap, $nextMap);
+$resp = $ct->store('table', 'you@company.com', 'Comment', $prevMap, $nextMap);
 
 
 //Nested objects
 
 $data = json_decode('{"price": 200, "customer": {"address": "4992 Harper Street"}}');
 
-$prevMap = $ct->modelTracker->mapAll($data)->map('customer.address', 'address')->toRow('id');
+$prevMap = ModelTracker::mapAll($data)->map('customer.address', 'address')->toRow('id');
 
 $data->customer->address = "2411 Coolidge Street";
 
-$nextMap = $ct->modelTracker->mapAll($data)->map('customer.address', 'address')->toRow('id');
+$nextMap = ModelTracker::mapAll($data)->map('customer.address', 'address')->toRow('id');
 
-$resp = $service->store('table', 'you@company.com', 'Comment', $prevMap, $nextMap);
+$resp = $ct->store('table', 'you@company.com', 'Comment', $prevMap, $nextMap);
 
 
 //Linked tables
 
 $data = json_decode('{"id": "order_213", "price": 200, "address": "2411 Coolidge Street", "lines": [{"product_id": "prod_650", "quantity": 2}]}');
 
-$toTable = fn($data) => $ct->modelTracker->toTable('lines', array_map(fn($el) => $ct->modelTracker->mapAll($el)->toRow($el->product_id), $data->lines));
+$toTable = fn($data) => ModelTracker::toTable('lines', array_map(fn($el) => ModelTracker::mapAll($el)->toRow($el->product_id), $data->lines));
 
-$prevMap = $ct->modelTracker->mapAll($data)->toRow($data->id, [$toTable($data)]);
+$prevMap = ModelTracker::mapAll($data)->toRow($data->id, [$toTable($data)]);
 
 $data->lines[] = json_decode('{"product_id": "prod_639", "quantity": 5}');
 
-$nextMap = $ct->modelTracker->mapAll($data)->toRow($data->id, [$toTable($data)]);
+$nextMap = ModelTracker::mapAll($data)->toRow($data->id, [$toTable($data)]);
 
-$resp = $service->store('table', 'you@company.com', 'Comment', $prevMap, $nextMap);
+$resp = $ct->store('table', 'you@company.com', 'Comment', $prevMap, $nextMap);
 
 
 /*
 //Setting service hostname and keys
 $service = $changeTracker('hostName', 'ApiGetKey', 'ApiPostKey', 5);
 //store from service
-$res = $service->store('ACCOUNTTEST', 'currentTestUser', 'test row', new $Row('prevModel'), new $Row('nextModel'), '127.0.0.1');
+$res = $ct->store('ACCOUNTTEST', 'currentTestUser', 'test row', new $Row('prevModel'), new $Row('nextModel'), '127.0.0.1');
 //generate token
 $token = $generateToken('apiKey', 'tableName', 'rowKey');
 //store raw
