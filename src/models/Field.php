@@ -1,6 +1,8 @@
 <?php
     namespace Absolute\ChangeTrackerPhpSdk\Model;
 
+    use function PHPUnit\Framework\isEmpty;
+
     class Field {
         public string $f;
         public string $p;
@@ -31,6 +33,14 @@
             if($name === 'prevValue') return $this->p;
             if($name === 'nextValue') return $this->n;
             return $this->$name;
+        }
+
+        public function __isset($name)
+        {
+            if($name === 'name') return isEmpty($this->f);
+            if($name === 'prevValue') return isEmpty($this->p);
+            if($name === 'nextValue') return isEmpty($this->n);
+            return isset($this->$name);
         }
 
         public function toString() : string {
