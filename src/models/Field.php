@@ -37,9 +37,9 @@
 
         public function __isset($name)
         {
-            if($name === 'name') return empty($this->f);
-            if($name === 'prevValue') return empty($this->p);
-            if($name === 'nextValue') return empty($this->n);
+            if($name === 'name') return $this->f;
+            if($name === 'prevValue') return $this->p;
+            if($name === 'nextValue') return $this->n;
             return isset($this->$name);
         }
 
