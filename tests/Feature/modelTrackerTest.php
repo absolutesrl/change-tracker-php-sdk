@@ -19,12 +19,9 @@ function getMockModel() : MockModel{
 }
 
 test( 'test tracking base', function() {
-
     $model = getMockModel();
 
-    $modelTracker = new ModelTracker();
-
-    $map = $modelTracker->createMap($model)->mapAll()->ignore('testo')->map(fn($el) => $el->descrizione . " test", "descrizione");
+    $map = ModelTracker::createMap($model)->mapAll()->ignore('testo')->map(fn($el) => $el->descrizione . " test", "descrizione");
 
     $fields = $map->toList();
 
@@ -34,11 +31,9 @@ test( 'test tracking base', function() {
 
 test('test row table model with linked tables', function (){
     $model = getMockModel();
-    $modelTracker = new ModelTracker();
 
-
-    $row = $modelTracker->createMap($model)->mapAll()->toRow('PRIMA', [
-        $modelTracker->toTable('righe', array_map(fn($el) => $modelTracker->mapAll($el)->toRow($el->idProdotto), $model->righe))]
+    $row = ModelTracker::createMap($model)->mapAll()->toRow('PRIMA', [
+        ModelTracker::toTable('righe', array_map(fn($el) => ModelTracker::mapAll($el)->toRow($el->idProdotto), $model->righe))]
     );
 
     expect($row->key)->toBe('PRIMA');
@@ -58,8 +53,7 @@ test('test row table model with linked tables', function (){
 
 test('test mapping associazioni', function (){
     $model = getMockModel();
-    $modelTracker = new ModelTracker();
-    $map = $modelTracker->createMap($model)->map(fn($el) => $el->anagrafica->descrizione, 'anagrafica')->map('utente.descrizione', 'utente');
+    $map = ModelTracker::createMap($model)->map(fn($el) => $el->anagrafica->descrizione, 'anagrafica')->map('utente.descrizione', 'utente');
 
     $fields = $map->toList();
 
@@ -78,8 +72,7 @@ test('test mapping errori mapping gestiti su console', function(){
     //$logSpy = pest->spyOn(var_dump(), 'log');
 
     $model = getMockModel();
-    $modelTracker = new ModelTracker();
-    $map = $modelTracker->createMap($model)->map(fn($el) => $el->prodotto->descrizione, 'prodotto')->map('magazzino.descrizione', 'magazzino');
+    $map = ModelTracker::createMap($model)->map(fn($el) => $el->prodotto->descrizione, 'prodotto')->map('magazzino.descrizione', 'magazzino');
 
     $fields = $map->toList();
 
