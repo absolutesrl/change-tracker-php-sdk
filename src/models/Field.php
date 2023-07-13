@@ -40,7 +40,7 @@
             if($name === 'name') return $this->f;
             if($name === 'prevValue') return $this->p;
             if($name === 'nextValue') return $this->n;
-            return isset($this->$name);
+            return $this->$name;
         }
 
         public function toString() : string {
