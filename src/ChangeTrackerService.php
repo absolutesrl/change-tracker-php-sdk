@@ -56,7 +56,7 @@ class ChangeTrackerService {
      */
     public function store(string $tableName, string $userName, string $rowDescription, Row $prevModel, Row $nextModel, string $ipAddress = '') {
         $token = $this->token->generateToken($this->apiSecretPost, $tableName, '', $this->tokenMinuteDuration);
-        $row = $this->changeCalculator->diff($tableName, $prevModel, $nextModel);
+        $row = $this->changeCalculator->diff($prevModel, $nextModel);
 
         if (!$row) return json_decode('{"ok" : false, "errorText": "ChangeTracker, changeCalculator: missing or invalid changeCalculator models"}');
 

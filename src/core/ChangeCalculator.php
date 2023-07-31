@@ -19,7 +19,7 @@ use function Absolute\ChangeTrackerPhpSdk\Helper\any;
  */
 class ChangeCalculator implements ChangeCalculatorInterface {
 
-    public function diff(string $tableName, Row $prev = null, Row $next = null) {
+    public function diff(Row $prev = null, Row $next = null) {
         $diffModel = new Row();
 
         $prevIsSet = isset($prev);
@@ -78,7 +78,7 @@ class ChangeCalculator implements ChangeCalculatorInterface {
 
                     if(isset($nextTable)) $nextRow = find($nextTable->rows, fn($el) => $el->key === $row->key);
 
-                    $diffRow = $this->diff($table->name, $row, $nextRow ?? null);
+                    $diffRow = $this->diff($row, $nextRow ?? null);
                     if ($diffRow && $this->isFull($diffRow))
                         $addedTable->rows[] = $diffRow;
                 }
@@ -97,7 +97,7 @@ class ChangeCalculator implements ChangeCalculatorInterface {
                     if(isset($prev)) $prevTable = find($prev->tables, fn($el) => ($el->name) === ($table->name));
                     if(isset($prevTable) && is_array($prevTable->rows)) $prevRow = find($prevTable->rows, fn($el) => $el->key === $row->key);
 
-                    $diffRow = $this->diff($table->name, $prevRow ?? null, $row);
+                    $diffRow = $this->diff($prevRow ?? null, $row);
                     $alreadyRow = find($addedTable->rows, fn($el) => $el->key === $row->key);
 
                     if (!$alreadyRow && $diffRow && $this->isFull($diffRow))
