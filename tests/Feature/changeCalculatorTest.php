@@ -34,7 +34,7 @@ test('test diff base', function(){
 
     $nextMap = ModelTracker::mapAll($model)->toRow('PRIMA');
 
-    $diff = $changeCalculator->diff('model', $prevMap, $nextMap);
+    $diff = $changeCalculator->diff($prevMap, $nextMap);
 
     expect($diff)->toBeInstanceOf(Row::class);
     expect($diff->state)->toBeString(RowStatus::MODIFIED);
@@ -64,7 +64,7 @@ test('test diff associazioni', function() {
         ModelTracker::toTable('righe', array_map(fn($el) => ModelTracker::mapAll($el)->toRow($el->idProdotto), $model->righe))]
     );
 
-    $diff = $changeCalculator->diff('$model', $prevMap, $nextMap);
+    $diff = $changeCalculator->diff($prevMap, $nextMap);
 
     expect($diff)->toBeInstanceOf(Row::class);
     expect($diff->key)->toBeString('PRIMA');
@@ -89,7 +89,7 @@ test('test diff new', function(){
 
     $nextMap = ModelTracker::mapAll($model)->toRow('PRIMA');
 
-    $diff = $changeCalculator->diff('model', null, $nextMap);
+    $diff = $changeCalculator->diff(null, $nextMap);
 
     expect($diff)->toBeInstanceOf(Row::class);
     expect($diff->state)->toBeString(RowStatus::NEW);
@@ -102,7 +102,7 @@ test('test diff delete', function(){
 
     $prevMap = ModelTracker::mapAll($model)->toRow('PRIMA');
 
-    $diff = $changeCalculator->diff('model', $prevMap);
+    $diff = $changeCalculator->diff($prevMap);
 
     expect($diff)->toBeInstanceOf(Row::class);
     expect($diff->state)->toBeString(RowStatus::DELETED);
@@ -118,7 +118,7 @@ test('test $diff unchanged', function(){
 
     $nextMap = ModelTracker::mapAll($model)->toRow('PRIMA');
 
-    $diff = $changeCalculator->diff('model', $prevMap, $nextMap);
+    $diff = $changeCalculator->diff($prevMap, $nextMap);
 
     expect($diff)->toBeInstanceOf(Row::class);
     expect($diff->state)->toBeString(RowStatus::UNCHANGED);

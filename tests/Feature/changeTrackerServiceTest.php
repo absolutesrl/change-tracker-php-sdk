@@ -22,13 +22,13 @@ class MockToken2 implements TokenInterface {
 }
 class MockChangeCalculator implements ChangeCalculatorInterface {
 
-    public function diff(string $tableName, Row $prev = null, Row $next = null)
+    public function diff(Row $prev = null, Row $next = null)
     {
         return null;
     }
 }
 class MockChangeCalculator2 implements ChangeCalculatorInterface {
-    public function diff(string $tableName, Row $prev = null, Row $next = null)
+    public function diff(Row $prev = null, Row $next = null)
     {
         return new Row('diffModel');
     }
