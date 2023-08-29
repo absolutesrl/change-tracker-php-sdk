@@ -9,6 +9,7 @@ use Absolute\ChangeTrackerPhpSdk\Core\ChangeCalculator;
 use Absolute\ChangeTrackerPhpSdk\Core\Token;
 use Absolute\ChangeTrackerPhpSdk\Model\Row;
 use Absolute\ChangeTrackerPhpSdk\Model\Table;
+use function Absolute\ChangeTrackerPhpSdk\Helper\isFull;
 
 /**
  * change tracker interface
@@ -59,6 +60,8 @@ class ChangeTrackerService {
         $row = $this->changeCalculator->diff($prevModel, $nextModel);
 
         if (!$row) return json_decode('{"ok" : false, "errorText": "ChangeTracker, changeCalculator: missing or invalid changeCalculator models"}');
+
+        if(!isFull($row)) return json_decode('{"ok": true}');
 
         $row->desc = $rowDescription;
 

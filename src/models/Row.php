@@ -11,6 +11,8 @@
 
         function __construct(string $key = '') {
             $this->key = $key;
+            $this->fields = [];
+            $this->tables = [];
         }
 
         //isFilled - check if model contains data
