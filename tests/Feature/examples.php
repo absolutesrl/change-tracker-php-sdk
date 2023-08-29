@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../vendor/autoload.php');
+require_once(__DIR__ . '/../../vendor/autoload.php');
 use Absolute\ChangeTrackerPhpSdk\ChangeTrackerService;
 use Absolute\ChangeTrackerPhpSdk\ModelTracker;
 
@@ -21,7 +21,6 @@ $nextMap = ModelTracker::mapAll($data)->toRow('id');
 
 // Store changes in ChangeTracker
 $resp = $ct->store('table', 'you@company.com', 'Comment', $prevMap, $nextMap);
-
 
 // Ignore attributes
 
@@ -63,7 +62,12 @@ $nextMap = ModelTracker::mapAll($data)->toRow($data->id, [$toTable($data)]);
 
 $resp = $ct->store('table', 'you@company.com', 'Comment', $prevMap, $nextMap);
 
+//Get Token
 
+
+$token = $ct->getToken('tableName', 'rowKey');
+
+var_dump($token);
 /*
 //Setting service hostname and keys
 $service = $changeTracker('hostName', 'ApiGetKey', 'ApiPostKey', 5);

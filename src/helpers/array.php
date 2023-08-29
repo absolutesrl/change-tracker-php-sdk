@@ -24,3 +24,9 @@ function find(array $array, callable $fn) {
     }
     return null;
 }
+function isDefaultValue($value) : bool{
+    return $value === null || $value === '';
+}
+function isFull($model) : bool {
+    return is_array($model->fields) && count($model->fields) > 0 || is_array($model->tables) && any($model->tables, fn($el) => (any($el->rows, 'isFull')));
+}

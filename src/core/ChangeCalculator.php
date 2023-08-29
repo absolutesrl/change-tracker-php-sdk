@@ -7,7 +7,8 @@ use Absolute\ChangeTrackerPhpSdk\Model\Row;
 use Absolute\ChangeTrackerPhpSdk\Model\Field;
 use Absolute\ChangeTrackerPhpSdk\Model\RowStatus;
 use function Absolute\ChangeTrackerPhpSdk\Helper\find;
-use function Absolute\ChangeTrackerPhpSdk\Helper\any;
+use function Absolute\ChangeTrackerPhpSdk\Helper\isDefaultValue;
+use function Absolute\ChangeTrackerPhpSdk\Helper\isFull;
 
 
 /**
@@ -38,7 +39,7 @@ class ChangeCalculator implements ChangeCalculatorInterface {
         if ($prevIsSet && !empty($prev->fields))
             foreach ($prev->fields as $field) {
                 //ignore default field values ('', null, undefined)
-                if (isset($diffModel->state) && $diffModel->state === RowStatus::DELETED && $this->isDefaultValue($field->prevValue)) continue;
+                if (isset($diffModel->state) && $diffModel->state === RowStatus::DELETED && isDefaultValue($field->prevValue)) continue;
 
                 $diffField = new Field($field->name, $field->prevValue);
 
@@ -48,7 +49,7 @@ class ChangeCalculator implements ChangeCalculatorInterface {
         if ($nextIsSet && !empty($next->fields)) {
             foreach ($next->fields as $field) {
                 //ignore default field values ('', null, undefined)
-                if (isset($diffModel->state) && $diffModel->state === RowStatus::NEW && $this->isDefaultValue($field->prevValue)) continue;
+                if (isset($diffModel->state) && $diffModel->state === RowStatus::NEW && isDefaultValue($field->prevValue)) continue;
 
                 $diffField = find($diffModel->fields ?? [], fn($el) => strtolower($field->name) === strtolower($el->name));
 
@@ -60,7 +61,7 @@ class ChangeCalculator implements ChangeCalculatorInterface {
             }
         }
 
-        // Prende solo quelli differenti
+        //search for different fields
         $diffModel->fields = array_filter($diffModel->fields ?? [], fn($el) => strtolower($el->prevValue) !== strtolower($el->nextValue));
 
         if (!isset($diffModel->state))
@@ -79,7 +80,7 @@ class ChangeCalculator implements ChangeCalculatorInterface {
                     if(isset($nextTable)) $nextRow = find($nextTable->rows, fn($el) => $el->key === $row->key);
 
                     $diffRow = $this->diff($row, $nextRow ?? null);
-                    if ($diffRow && $this->isFull($diffRow))
+                    if ($diffRow && isFull($diffRow))
                         $addedTable->rows[] = $diffRow;
                 }
             }
@@ -100,7 +101,7 @@ class ChangeCalculator implements ChangeCalculatorInterface {
                     $diffRow = $this->diff($prevRow ?? null, $row);
                     $alreadyRow = find($addedTable->rows, fn($el) => $el->key === $row->key);
 
-                    if (!$alreadyRow && $diffRow && $this->isFull($diffRow))
+                    if (!$alreadyRow && $diffRow && isFull($diffRow))
                         $addedTable->rows[] = $diffRow;
                 }
             }
@@ -108,12 +109,5 @@ class ChangeCalculator implements ChangeCalculatorInterface {
         $diffModel->tables = array_filter($diffModel->tables ?? [], fn($el) => is_array($el->rows) && count($el->rows) > 0);
 
         return $diffModel;
-    }
-
-    function isDefaultValue($value) : bool{
-        return $value === null || $value === '';
-    }
-    function isFull($model) : bool {
-        return is_array($model->fields) && count($model->fields) > 0 || is_array($model->tables) && any($model->tables, fn($el) => (any($el->rows, 'isFull')));
     }
 }
